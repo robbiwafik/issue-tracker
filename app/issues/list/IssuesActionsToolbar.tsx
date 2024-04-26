@@ -1,7 +1,14 @@
-import { Button } from "@radix-ui/themes"
-import Link from "next/link"
+import authOptions from '@/app/auth/authOption'
+import { Button } from '@radix-ui/themes'
+import { getServerSession } from 'next-auth'
+import Link from 'next/link'
 
-const IssueActionsToolbar = () => {
+const IssueActionsToolbar = async () => {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user)
+        return null
+
     return (
         <div className='mb-5'>
             <Button>
