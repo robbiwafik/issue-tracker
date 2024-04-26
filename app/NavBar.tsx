@@ -1,6 +1,6 @@
 'use client'
 
-import { Avatar, Box, Container, DropdownMenu, Flex, Text } from '@radix-ui/themes'
+import { Avatar, Box, Container, DropdownMenu, Flex, Skeleton, Text } from '@radix-ui/themes'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -11,7 +11,7 @@ const NavBar = () => {
     return (
         <nav className='py-6 border-b mb-5'>
             <Container>
-                <Flex justify='between'>
+                <Flex justify='between' align='center'>
                     <Flex align='center' gap='3'>
                         <Link href='/'>
                             <AiFillBug />
@@ -56,7 +56,7 @@ const AuthStatus = () => {
     const { status, data: session } = useSession()
 
     if (status === 'loading')
-        return null
+        return <Skeleton width='3rem' />
 
     if (status === 'unauthenticated')
         return <Link className='nav-link' href='/api/auth/signin'>Log in</Link>
