@@ -21,4 +21,5 @@ export const patchIssueSchema = z.object({
         .min(1)
         .max(255)
         .optional()
+        .nullable()
 })
