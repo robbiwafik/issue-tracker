@@ -1,7 +1,9 @@
-import Image from "next/image";
+import { Pagination } from './components'
 
 export default function Home() {
   return (
-    <div>Hello World</div>
-  );
+    <div>
+      <Pagination />
+    </div>
+  )
 }
