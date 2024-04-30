@@ -1,14 +1,26 @@
-import prisma from '@/prisma/client'
-import { Table } from '@radix-ui/themes'
 import { IssueStatusBadge, Link } from '@/app/components'
+import prisma from '@/prisma/client'
+import { Issue, Status } from '@prisma/client'
+import { TriangleUpIcon } from '@radix-ui/react-icons'
+import { Table } from '@radix-ui/themes'
+import NextLink from 'next/link'
 import IssueActionsToolbar from './IssuesActionsToolbar'
-import { Status } from '@prisma/client'
 
 interface Props {
-  searchParams: { status: Status }
+  searchParams: { status: Status, orderBy: keyof Issue }
 }
 
 const IssuesPage = async ({ searchParams }: Props ) => {
+  const columns: {
+    label: string;
+    value: keyof Issue;
+    className?: string
+  }[] = [
+    {label: 'Title', value: 'title'},
+    {label: 'Status', value: 'status', className: 'hidden md:table-cell'},
+    {label: 'Created At', value: 'createdAt', className: 'hidden md:table-cell'}
+  ]
+
   const statuses = Object.values(Status)
   const status = statuses.includes(searchParams.status) ? searchParams.status : undefined
   const issues = await prisma.issue.findMany({
@@ -21,9 +33,14 @@ const IssuesPage = async ({ searchParams }: Props ) => {
       <Table.Root variant='surface'>
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>Status</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>Created At</Table.ColumnHeaderCell>
+            {columns.map(column => (
+              <Table.ColumnHeaderCell className={column.className} key={column.value}>
+                <NextLink href={{ query: { ...searchParams, orderBy: column.value } }}>
+                    {column.label}
+                </NextLink>
+                {column.value === searchParams.orderBy && <TriangleUpIcon className='inline' />}
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
         <Table.Body>
