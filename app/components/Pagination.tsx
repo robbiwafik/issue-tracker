@@ -21,11 +21,13 @@ const Pagination = ({ currentPage, pageSize, itemCount }: Props) => {
         router.push('?' + params.toString())        
     }
 
-    const pagesCount = Math.ceil(itemCount / pageSize)
+    const pageCount = Math.ceil(itemCount / pageSize)
+
+    if (pageCount === 1) return null
 
     return (
         <Flex align='center' gap='4'>
-            <Text size='2'>{`Page ${currentPage} of ${pagesCount}`}</Text>
+            <Text size='2'>{`Page ${currentPage} of ${pageCount}`}</Text>
             <Flex gap='2'>
                 <Button 
                     disabled={currentPage === 1}
@@ -42,14 +44,14 @@ const Pagination = ({ currentPage, pageSize, itemCount }: Props) => {
                     <ChevronLeftIcon />
                 </Button>
                 <Button 
-                    disabled={currentPage === pagesCount}
+                    disabled={currentPage === pageCount}
                     onClick={() => changePage(currentPage + 1)}
                     variant='soft' 
                 >
                     <ChevronRightIcon />
                 </Button>
                 <Button 
-                    disabled={currentPage === pagesCount}
+                    disabled={currentPage === pageCount}
                     onClick={() => changePage(pageSize)}
                     variant='soft' 
                 >

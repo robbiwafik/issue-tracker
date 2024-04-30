@@ -1,13 +1,17 @@
-import { IssueStatusBadge, Link } from '@/app/components'
+import { IssueStatusBadge, Link, Pagination } from '@/app/components'
 import prisma from '@/prisma/client'
 import { Issue, Status } from '@prisma/client'
 import { TriangleUpIcon } from '@radix-ui/react-icons'
-import { Table } from '@radix-ui/themes'
+import { Flex, Table } from '@radix-ui/themes'
 import NextLink from 'next/link'
 import IssueActionsToolbar from './IssuesActionsToolbar'
 
 interface Props {
-  searchParams: { status: Status, orderBy: keyof Issue }
+  searchParams: { 
+    status: Status, 
+    orderBy: keyof Issue,
+    page: string
+  }
 }
 
 const IssuesPage = async ({ searchParams }: Props ) => {
@@ -28,10 +32,17 @@ const IssuesPage = async ({ searchParams }: Props ) => {
     .includes(searchParams.orderBy) ? 
       { [searchParams.orderBy]: 'asc' } : undefined
 
+  const page = parseInt(searchParams.page) || 1
+  const pageSize = 7
+
   const issues = await prisma.issue.findMany({
     where: { status },
-    orderBy
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize
   })
+
+  const issueCount = await prisma.issue.count({ where: { status }})
 
   return (
     <div>
@@ -68,6 +79,13 @@ const IssuesPage = async ({ searchParams }: Props ) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Flex mt='4' justify='end'>
+        <Pagination 
+          currentPage={page}
+          pageSize={pageSize}
+          itemCount={issueCount}
+        />
+      </Flex>
     </div>
   )
 }
