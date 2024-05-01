@@ -2,6 +2,7 @@ import { Pagination } from '@/app/components'
 import prisma from '@/prisma/client'
 import { Status } from '@prisma/client'
 import { Flex } from '@radix-ui/themes'
+import { Metadata } from 'next'
 import IssueActionsToolbar from './IssuesActionsToolbar'
 import IssueTable, { columnValues, SearchParams } from './IssueTable'
 
@@ -46,5 +47,10 @@ const IssuesPage = async ({ searchParams }: Props ) => {
 }
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Issue List',
+  description: 'View list of issues'
+}
 
 export default IssuesPage
