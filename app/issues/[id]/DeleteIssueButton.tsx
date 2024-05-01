@@ -41,7 +41,7 @@ const DeleteIssueButton = ({ issueId }: Props) => {
                 </AlertDialog.Trigger>
                 <AlertDialog.Content>
                     <AlertDialog.Title>Confirm Deletion</AlertDialog.Title>
-                    <AlertDialog.Description>Are you sure? This action can't be undone.</AlertDialog.Description>
+                    <AlertDialog.Description>Are you sure? This action can not be undone.</AlertDialog.Description>
                     <Flex mt='3' gap='3' justify='end'>
                         <AlertDialog.Cancel>
                             <Button variant='soft'>Cancel</Button>
