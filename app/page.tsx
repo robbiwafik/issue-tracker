@@ -1,7 +1,7 @@
-import LatestIssues from './LatestIssues'
+import IssueSummary from './IssueSummary'
 
 export default function Home() {
   return (
-    <LatestIssues />
+    <IssueSummary open={30} inProgress={20} closed={25} />
   )
 }
